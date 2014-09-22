@@ -211,7 +211,7 @@ int main( int argc, char* argv[] )
 				return 0;
 			}
 			
-			file << rally;
+			file << highScore;
 			file.getline(scores, 32);
 
 			//draw file shit
