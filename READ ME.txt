@@ -1,0 +1,11 @@
+Pong Version 1.0
+Solution Written by Wade Gushikuma usig AIE framework
+
+Controls: 
+	PLAYER 1
+	up    -  q
+	down  -  a
+	
+	PLAYER 2
+	up    -  o
+	down  -  l
