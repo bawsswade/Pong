@@ -58,6 +58,8 @@ Block ball;
 
 const int screenWidth = 800;
 const int screenHeight = 500;
+const int playerSpeed = 100;
+const int changeDir = -1;
 
 const char* font = "./fonts/invaders.fnt";
 
@@ -72,8 +74,20 @@ void scoring(int &a_p1Score, int &a_p2Score, float &a_xSpeed);
 /* increase respective player's score if reaches their end of screen*/
 
 void displayWinner(int a_p1Score, int a_p2Score);
+/* takes in both player's scores and checks if either reached 10 */
 
 int countRally(int &a_rally, int a_highScore);
+/* counts the amount of rallies, checks if its more than the high
+score, and replaces high score if so*/
+
+void drawBoard(char const *a_cP1Score, char const*a_cP2Score);
+/* draws sprites, stings and lines to display board */
+
+int getHighScore(int a_highScore);
+/* takes highscore from txt file and saves it*/
+
+void writeHighScore(int a_highScore);
+/* writes high score to txt file*/
 /////////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char* argv[] )
@@ -116,16 +130,13 @@ int main( int argc, char* argv[] )
 	int p2Score = 0;
 
 	//stuff for the ball
-	int changeDir = -1;
 	float ySpeed = 175;
 	float xSpeed = 175;
-
-	fstream file;
 
 	char scores[32];
 	int rally = 0;
 	int highScore = 0;
-	
+	highScore = getHighScore(highScore);
 	
     //***********************Game Loop************************
 	do
@@ -167,34 +178,19 @@ int main( int argc, char* argv[] )
 			break;
 
 		case GAMEPLAY:
-			// draw sprites
-			DrawSprite(player1.spriteId);
-			DrawSprite(player2.spriteId);
-			DrawSprite(ball.spriteId);
 			//draw board
-			DrawString(cP1Score, screenWidth * .4f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString(cP2Score, screenWidth * .6f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawLine(screenWidth*.5f, screenHeight * .02, screenWidth*.5f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawLine(screenWidth*.02f, screenHeight * .98, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.98f, screenHeight*.02f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.02f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawLine(screenWidth*.98f, screenHeight * .02, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-
-			//moving things
-			player1.Move(fDeltaT, 100);
-			player2.Move(fDeltaT, 100);
-
-			if (ball.y <= screenHeight * .03f || ball.y >= screenHeight * .97f){
-				ySpeed *= changeDir;
-			}
-
+			drawBoard(cP1Score, cP2Score);
+			//moving players
+			player1.Move(fDeltaT, playerSpeed);
+			player2.Move(fDeltaT, playerSpeed);
+			//move ball
 			direction = ballMove(fDeltaT, xSpeed, ySpeed, direction);
+			//checks rally and if highest, assigns to high score
 			highScore = countRally(rally, highScore);
+			//game scoreing
 			scoring(p1Score, p2Score, xSpeed);
-
 			// display winner
 			displayWinner(p1Score, p2Score);
-			
 			if (p1Score == 10 && IsKeyDown(257) || p2Score == 10 && IsKeyDown(257))
 			{
 				curGamestate = HIGH_SCORE;
@@ -202,41 +198,25 @@ int main( int argc, char* argv[] )
 			break;
 
 		case HIGH_SCORE:
-			//file shit
-			file.open("highScores.txt", std::fstream::in | std::fstream::out);
-
-			if (file.is_open()){}
-			else{
-				cout << "file is not found or cannot be opened...";
-				return 0;
-			}
-			
-			file << highScore;
-			file.getline(scores, 32);
-
-			//draw file shit
+			//draw file shit (the high score shit)
 			DrawString("Longest Rally", screenWidth * .4f, screenHeight *.6f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 			DrawString(cHS, screenWidth * .5f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-
-			//draw other shit
+			//draw other option shit for navigation
 			DrawString("press (p) to play again", screenWidth * .33f, screenHeight *.2f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 			DrawString("or (q) to quit", screenWidth * .4f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-
-			file.close();
-
+			// write high score to txt file
+			writeHighScore(highScore);
 			if (IsKeyDown('P'))
 			{
-				cout << " hello";
+				// reset game scores
 				p1Score = 0;
 				p2Score = 0;
 				curGamestate = GAMEPLAY;
 			}
-
 			if (IsKeyDown('Q'))
 			{
 				return 0;
 			}
-
 			break;
 
 		default:
@@ -258,7 +238,7 @@ int ballMove(float a_TimeStep, float &a_xSpeed, float &a_ySpeed, int a_direction
 {
 	if (a_direction == 1)
 	{
-		ball.x += a_TimeStep * a_xSpeed ;
+		ball.x += a_TimeStep * a_xSpeed;
 		ball.y += a_TimeStep * a_ySpeed *.5f;
 		//collision
 		if (ball.y <= player2.y + player2.height * .5f && ball.y >= player2.y - player2.height * .5f && ball.x >= screenWidth * .96f)
@@ -278,6 +258,10 @@ int ballMove(float a_TimeStep, float &a_xSpeed, float &a_ySpeed, int a_direction
 			a_xSpeed += 50;
 			a_direction = 1;
 		}
+	}
+	// ball up and down
+	if (ball.y <= screenHeight * .03f || ball.y >= screenHeight * .97f){
+		a_ySpeed *= changeDir;
 	}
 	MoveSprite(ball.spriteId, ball.x, ball.y);
 	return a_direction;
@@ -339,3 +323,44 @@ int countRally(int &a_rally, int a_highScore)
 	}
 	return a_highScore;
 }
+void drawBoard(char const*a_cP1Score, char const*a_cP2Score)
+{
+	// draw sprites
+	DrawSprite(player1.spriteId);
+	DrawSprite(player2.spriteId);
+	DrawSprite(ball.spriteId);
+	//draw board
+	DrawString(a_cP1Score, screenWidth * .4f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString(a_cP2Score, screenWidth * .6f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawLine(screenWidth*.5f, screenHeight * .02, screenWidth*.5f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawLine(screenWidth*.02f, screenHeight * .98, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.98f, screenHeight*.02f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.02f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawLine(screenWidth*.98f, screenHeight * .02, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+}
+
+int getHighScore(int a_highScore)
+{
+	fstream file;
+	file.open("highScores.txt", std::fstream::in);
+	if (file.is_open()){
+	}
+	else{
+		cout << "file is not found or cannot be opened...";
+	}
+	file >> a_highScore;
+	file.close();
+	return a_highScore;
+}
+void writeHighScore(int a_highScore)
+{
+	fstream file;
+	file.open("highScores.txt", std::fstream::out);
+	if (file.is_open()){
+	}
+	else{
+		cout << "file is not found or cannot be opened...";
+	}
+	file << a_highScore;
+}
+
