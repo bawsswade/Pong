@@ -1,40 +1,40 @@
-﻿Build started 9/23/2014 1:39:06 PM.
+﻿Build started 9/23/2014 2:39:47 PM.
      1>Project "C:\Users\wade.gushikuma\Documents\GitHub\Pong\AIE Template.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./ /I./include/ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\\" /Fd"obj\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\main.cpp
          main.cpp
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(104): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(106): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(112): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(114): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(120): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(162): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(163): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(164): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(165): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(184): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(185): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(202): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(203): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(205): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(206): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(136): warning C4101: 'scores' : unreferenced local variable
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(291): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(292): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(297): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(298): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(333): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(334): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(335): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(335): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(336): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(336): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(337): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(337): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(338): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(338): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(339): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(339): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(160): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(161): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(113): warning C4101: 'scores' : unreferenced local variable
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(269): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(270): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(275): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(276): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(311): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(312): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(313): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(313): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(314): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(314): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(315): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(315): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(316): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(316): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(317): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(317): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(355): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(357): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(363): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(365): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(371): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(380): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(381): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(382): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(383): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(389): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(390): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(392): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wade.gushikuma\documents\github\pong\source\main.cpp(393): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"bin\AIE Template_d.exe" /INCREMENTAL /NOLOGO /LIBPATH:./libs AIE_1st_Year_Framework_d.lib kernel32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"bin\AIE Template_d.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"bin\AIE Template_d.lib" /MACHINE:X86 obj\main.obj
          AIE_1st_Year_Framework_d.lib(SOIL.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
@@ -70,4 +70,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.33
+Time Elapsed 00:00:01.19

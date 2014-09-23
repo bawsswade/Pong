@@ -88,41 +88,18 @@ int getHighScore(int a_highScore);
 
 void writeHighScore(int a_highScore);
 /* writes high score to txt file*/
+
+void setupGame();
+
+void drawMenu();
+
+void drawScores(char const *a_cHS);
+
+void addPointCheat(int &a_p1Score, int &a_p2Score, float a_TimeStep);
 /////////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char* argv[] )
 {	
-
-	//initialize screen settings
-	Initialise(screenWidth, screenHeight, false, "Pong");
-	SetBackgroundColour(SColour(0x00, 0x00, 0x00, 0xFF));
-
-	
-	// setup player 1
-	player1.SetMovementKeys('Q', 'A');
-	player1.SetSize(screenWidth * .01f ,screenHeight * .1f);
-	player1.SetMoveExtremes(screenHeight * .02f, screenHeight * .98f);
-	player1.SetPosition(screenWidth * .04f, screenHeight * .5f);
-	player1.spriteId = CreateSprite("./images/block.png", player1.width, player1.height, true);
-	MoveSprite(player1.spriteId, player1.x, player1.y);
-
-	// setup player 2
-	player2.SetMovementKeys('O', 'L');
-	player2.SetSize(screenWidth * .01f, screenHeight * .1f);
-	player2.SetMoveExtremes(screenHeight * .02f, screenHeight * .98f);
-	player2.SetPosition(screenWidth * .96f, screenHeight * .5f);
-	player2.spriteId = CreateSprite("./images/block.png", player2.width, player2.height, true);
-	MoveSprite(player2.spriteId, player2.x, player2.y);
-
-	//setup ball
-	ball.SetSize(screenWidth * .013f, screenHeight * .02f);
-	ball.SetPosition(screenWidth * .5f, screenHeight * .9f);
-	ball.spriteId = CreateSprite("./images/ball.png", ball.width, ball.height, true);
-	MoveSprite(ball.spriteId, ball.x, ball.y);
-
-
-	AddFont(font);
-
 	int direction = 1;
 
 	//scores
@@ -136,6 +113,8 @@ int main( int argc, char* argv[] )
 	char scores[32];
 	int rally = 0;
 	int highScore = 0;
+
+	setupGame();
 	highScore = getHighScore(highScore);
 	
     //***********************Game Loop************************
@@ -148,10 +127,10 @@ int main( int argc, char* argv[] )
 		// convert int to string
 		string sP1Score = to_string(p1Score);
 		string sP2Score = to_string(p2Score);
+		string sHS = to_string(highScore);
+
 		char const *cP1Score = sP1Score.c_str();
 		char const *cP2Score = sP2Score.c_str();
-
-		string sHS = to_string(highScore);
 		char const *cHS = sHS.c_str();
 
 		SetFont(font);
@@ -159,10 +138,8 @@ int main( int argc, char* argv[] )
 		switch (curGamestate)
 		{
 		case MAIN_MENU:
-			DrawString("PONG", screenWidth * .46, screenHeight *.7, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString("1. Play", screenWidth * .35, screenHeight *.6, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString("2. High Score", screenWidth * .35, screenHeight *.5, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString("3. Exit", screenWidth * .35, screenHeight *.4, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			drawMenu();
+
 			if (IsKeyDown('1'))
 			{
 				curGamestate = GAMEPLAY;
@@ -178,34 +155,35 @@ int main( int argc, char* argv[] )
 			break;
 
 		case GAMEPLAY:
-			//draw board
 			drawBoard(cP1Score, cP2Score);
-			//moving players
+			
 			player1.Move(fDeltaT, playerSpeed);
 			player2.Move(fDeltaT, playerSpeed);
+
 			//move ball
 			direction = ballMove(fDeltaT, xSpeed, ySpeed, direction);
+
 			//checks rally and if highest, assigns to high score
 			highScore = countRally(rally, highScore);
-			//game scoreing
+
+			addPointCheat(p1Score, p2Score, fDeltaT);
+
 			scoring(p1Score, p2Score, xSpeed);
-			// display winner
+
 			displayWinner(p1Score, p2Score);
-			if (p1Score == 10 && IsKeyDown(257) || p2Score == 10 && IsKeyDown(257))
+
+			if (p1Score >= 10 && IsKeyDown(257) || p2Score >= 10 && IsKeyDown(257))
 			{
 				curGamestate = HIGH_SCORE;
 			}
 			break;
 
 		case HIGH_SCORE:
-			//draw file shit (the high score shit)
-			DrawString("Longest Rally", screenWidth * .4f, screenHeight *.6f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString(cHS, screenWidth * .5f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			//draw other option shit for navigation
-			DrawString("press (p) to play again", screenWidth * .33f, screenHeight *.2f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-			DrawString("or (q) to quit", screenWidth * .4f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			drawScores(cHS);
+
 			// write high score to txt file
 			writeHighScore(highScore);
+
 			if (IsKeyDown('P'))
 			{
 				// reset game scores
@@ -286,13 +264,13 @@ void scoring(int &a_p1Score, int &a_p2Score, float &a_xSpeed)
 void displayWinner(int a_p1Score, int a_p2Score)
 {
 	char * winner;
-	if (a_p1Score == 10){
+	if (a_p1Score >= 10){
 		winner = "Player 1 Wins!";
 		DrawString(winner, screenWidth * .4f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 		DrawString("press enter to continue...", screenWidth * .3f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 		ball.SetPosition(screenWidth * .5f, screenHeight * .9f);
 	}
-	else if (a_p2Score == 10){
+	else if (a_p2Score >= 10){
 		winner = "Player 2 Wins!";
 		DrawString(winner, screenWidth * .4f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 		DrawString("press enter to continue...", screenWidth * .3f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
@@ -364,3 +342,63 @@ void writeHighScore(int a_highScore)
 	file << a_highScore;
 }
 
+void setupGame()
+{
+	//initialize screen settings
+	Initialise(screenWidth, screenHeight, false, "Pong");
+	SetBackgroundColour(SColour(0x00, 0x00, 0x00, 0xFF));
+
+
+	// setup player 1
+	player1.SetMovementKeys('Q', 'A');
+	player1.SetSize(screenWidth * .01f, screenHeight * .1f);
+	player1.SetMoveExtremes(screenHeight * .02f, screenHeight * .98f);
+	player1.SetPosition(screenWidth * .04f, screenHeight * .5f);
+	player1.spriteId = CreateSprite("./images/block.png", player1.width, player1.height, true);
+	MoveSprite(player1.spriteId, player1.x, player1.y);
+
+	// setup player 2
+	player2.SetMovementKeys('O', 'L');
+	player2.SetSize(screenWidth * .01f, screenHeight * .1f);
+	player2.SetMoveExtremes(screenHeight * .02f, screenHeight * .98f);
+	player2.SetPosition(screenWidth * .96f, screenHeight * .5f);
+	player2.spriteId = CreateSprite("./images/block.png", player2.width, player2.height, true);
+	MoveSprite(player2.spriteId, player2.x, player2.y);
+
+	//setup ball
+	ball.SetSize(screenWidth * .013f, screenHeight * .02f);
+	ball.SetPosition(screenWidth * .5f, screenHeight * .9f);
+	ball.spriteId = CreateSprite("./images/ball.png", ball.width, ball.height, true);
+	MoveSprite(ball.spriteId, ball.x, ball.y);
+
+
+	AddFont(font);
+}
+
+void drawMenu()
+{
+	DrawString("PONG", screenWidth * .46, screenHeight *.7, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString("1. Play", screenWidth * .35, screenHeight *.6, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString("2. High Score", screenWidth * .35, screenHeight *.5, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString("3. Exit", screenWidth * .35, screenHeight *.4, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+}
+
+void drawScores(char const *a_cHS)
+{
+	//draw file shit (the high score shit)
+	DrawString("Longest Rally", screenWidth * .4f, screenHeight *.6f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString(a_cHS, screenWidth * .5f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	//draw other option shit for navigation
+	DrawString("press (p) to play again", screenWidth * .33f, screenHeight *.2f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+	DrawString("or (q) to quit", screenWidth * .4f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+}
+
+void addPointCheat(int &a_p1Score, int &a_p2Score, float a_TimeStep)
+{
+	if (IsKeyDown('N')){
+		a_p1Score++;
+	}
+	if (IsKeyDown('M')){
+		a_p2Score++;
+	}
+}
