@@ -1,24 +1,10 @@
-﻿// PONG CLONE 1.0
-// Written by Wade Gushikuma 
-// using the AIE framework
-// September 23, 2014
-
-//This Pong Clone is a 2 person game where each player controls a paddle
-// on their respective side of the board and prevents a ball from reaching
-// their end of their board.If the ball reaches then end of a player's 
-// side, a point will be given to the opposing player.The game ends when
-// a player reaches 10 points.
-
-
-
-#include "AIE.h"
+﻿#include "AIE.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 
 using namespace std;
 
-//  used to set and store paddle's info 
 struct Block{
 	unsigned int spriteId, min, max, upKey, downKey;
 	float width, height, x, y;
@@ -72,8 +58,6 @@ Block ball;
 
 const int screenWidth = 800;
 const int screenHeight = 500;
-const int playerSpeed = 100;
-const int changeDir = -1;
 
 const char* font = "./fonts/invaders.fnt";
 
@@ -88,21 +72,8 @@ void scoring(int &a_p1Score, int &a_p2Score, float &a_xSpeed);
 /* increase respective player's score if reaches their end of screen*/
 
 void displayWinner(int a_p1Score, int a_p2Score);
-/* takes in both player's scores and checks if either reached 10 */
 
 int countRally(int &a_rally, int a_highScore);
-/* counts the amount of rallies, checks if its more than the high
-score, and replaces high score if so*/
-
-void drawBoard(char const *a_cP1Score, char const*a_cP2Score);
-/* draws sprites, stings and lines to display board */
-
-int getHighScore(int a_highScore);
-/* takes highscore from txt file and saves it*/
-
-void writeHighScore(int a_highScore);
-/* writes high score to txt file*/
-
 /////////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char* argv[] )
@@ -135,26 +106,26 @@ int main( int argc, char* argv[] )
 	ball.spriteId = CreateSprite("./images/ball.png", ball.width, ball.height, true);
 	MoveSprite(ball.spriteId, ball.x, ball.y);
 
-	//setup font
+
 	AddFont(font);
 
 	int direction = 1;
 
 	//scores
-	int p1Score = 9; 
+	int p1Score = 0; 
 	int p2Score = 0;
 
 	//stuff for the ball
-	//int changeDir = -1;
+	int changeDir = -1;
 	float ySpeed = 175;
 	float xSpeed = 175;
 
-	char scores[5];
+	fstream file;
+
+	char scores[32];
 	int rally = 0;
 	int highScore = 0;
 	
-	highScore = getHighScore(highScore);
-
 	
     //***********************Game Loop************************
 	do
@@ -169,7 +140,6 @@ int main( int argc, char* argv[] )
 		char const *cP1Score = sP1Score.c_str();
 		char const *cP2Score = sP2Score.c_str();
 
-		//file.getline(scores, 5);
 		string sHS = to_string(highScore);
 		char const *cHS = sHS.c_str();
 
@@ -197,20 +167,29 @@ int main( int argc, char* argv[] )
 			break;
 
 		case GAMEPLAY:
+			// draw sprites
+			DrawSprite(player1.spriteId);
+			DrawSprite(player2.spriteId);
+			DrawSprite(ball.spriteId);
 			//draw board
-			drawBoard(cP1Score, cP2Score);
+			DrawString(cP1Score, screenWidth * .4f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawString(cP2Score, screenWidth * .6f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawLine(screenWidth*.5f, screenHeight * .02, screenWidth*.5f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawLine(screenWidth*.02f, screenHeight * .98, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.98f, screenHeight*.02f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.02f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
+			DrawLine(screenWidth*.98f, screenHeight * .02, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 
-			//moving players
-			player1.Move(fDeltaT, playerSpeed);
-			player2.Move(fDeltaT, playerSpeed);
+			//moving things
+			player1.Move(fDeltaT, 100);
+			player2.Move(fDeltaT, 100);
 
-			//move ball
+			if (ball.y <= screenHeight * .03f || ball.y >= screenHeight * .97f){
+				ySpeed *= changeDir;
+			}
+
 			direction = ballMove(fDeltaT, xSpeed, ySpeed, direction);
-
-			//checks rally and if highest, assigns to high score
 			highScore = countRally(rally, highScore);
-
-			//game scoreing
 			scoring(p1Score, p2Score, xSpeed);
 
 			// display winner
@@ -223,20 +202,31 @@ int main( int argc, char* argv[] )
 			break;
 
 		case HIGH_SCORE:
-			//draw file shit (the high score shit)
+			//file shit
+			file.open("highScores.txt", std::fstream::in | std::fstream::out);
+
+			if (file.is_open()){}
+			else{
+				cout << "file is not found or cannot be opened...";
+				return 0;
+			}
+			
+			file << highScore;
+			file.getline(scores, 32);
+
+			//draw file shit
 			DrawString("Longest Rally", screenWidth * .4f, screenHeight *.6f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 			DrawString(cHS, screenWidth * .5f, screenHeight *.5f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 
-			//draw other option shit for navigation 
-			DrawString("press (p) to play again", screenWidth * .33f, screenHeight *.2f, SColour(0xFF, 0xFF, 0xFF,   0xFF));
+			//draw other shit
+			DrawString("press (p) to play again", screenWidth * .33f, screenHeight *.2f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 			DrawString("or (q) to quit", screenWidth * .4f, screenHeight *.1f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
 
-			// write high score to txt file
-			writeHighScore(highScore);
+			file.close();
 
 			if (IsKeyDown('P'))
 			{
-				// reset game scores
+				cout << " hello";
 				p1Score = 0;
 				p2Score = 0;
 				curGamestate = GAMEPLAY;
@@ -289,12 +279,6 @@ int ballMove(float a_TimeStep, float &a_xSpeed, float &a_ySpeed, int a_direction
 			a_direction = 1;
 		}
 	}
-
-	// ball up and down
-	if (ball.y <= screenHeight * .03f || ball.y >= screenHeight * .97f){
-		a_ySpeed *= changeDir;
-	}
-
 	MoveSprite(ball.spriteId, ball.x, ball.y);
 	return a_direction;
 }
@@ -354,50 +338,4 @@ int countRally(int &a_rally, int a_highScore)
 		a_rally = 0;
 	}
 	return a_highScore;
-}
-
-void drawBoard(char const*a_cP1Score, char const*a_cP2Score)
-{
-	// draw sprites
-	DrawSprite(player1.spriteId);
-	DrawSprite(player2.spriteId);
-	DrawSprite(ball.spriteId);
-	//draw board
-	DrawString(a_cP1Score, screenWidth * .4f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawString(a_cP2Score, screenWidth * .6f, screenHeight * .95f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawLine(screenWidth*.5f, screenHeight * .02, screenWidth*.5f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawLine(screenWidth*.02f, screenHeight * .98, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.98f, screenHeight*.02f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawLine(screenWidth*.02f, screenHeight * .02, screenWidth*.02f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-	DrawLine(screenWidth*.98f, screenHeight * .02, screenWidth*.98f, screenHeight*.98f, SColour(0xFF, 0xFF, 0xFF, 0xFF));
-}
-int getHighScore(int a_highScore)
-{
-	fstream file;
-
-	file.open("highScores.txt", std::fstream::in);
-
-	if (file.is_open()){
-	}
-	else{
-		cout << "file is not found or cannot be opened...";
-	}
-
-	file >> a_highScore;
-
-	file.close();
-	return a_highScore;
-}
-
-void writeHighScore(int a_highScore)
-{
-	fstream file;
-	file.open("highScores.txt", std::fstream::out);
-
-	if (file.is_open()){
-	}
-	else{
-		cout << "file is not found or cannot be opened...";
-	}
-	file << a_highScore;
 }
