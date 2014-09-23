@@ -1,6 +1,12 @@
 Pong Version 1.0
 Solution Written by Wade Gushikuma usig AIE framework
 
+This Pong Clone is a 2 person game where each player controls a paddle
+on their respective side of the board and prevents a ball from reaching
+their end of their board. If the ball reaches then end of a player's 
+side, a point will be given to the opposing player. The game ends when 
+a player reaches 10 points. 
+
 Controls: 
 	PLAYER 1
 	up    -  q
